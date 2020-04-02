@@ -1,16 +1,19 @@
 {
-  "name": "paperstar-app",
-  "version": "1.0.0",
-  "description": "PaperStar generator",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Leon Wormuth",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^0.19.2",
-    "canvas": "^2.6.1",
-    "express": "^4.17.1"
-  }
+    "name": "paperstar-app",
+    "version": "1.0.0",
+    "description": "PaperStar generator",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Leon Wormuth",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.19.2",
+        "canvas": "^2.6.1",
+        "express": "^4.17.1"
+    },
+    "engines": {
+        "node": "12.16.x"
+    }
 }
