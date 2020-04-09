@@ -192,18 +192,7 @@ function post() {
     stream.on('end', function() {console.log('Saved new star successfully.');});
 
     //post request to upload image
-/*
-    axios.post('https://graph.facebook.com/229893064559530/photos', {
-        url: image,
-        access_token: 'EAACVS6jUj0QBAI6FWZAjWHgL40SCzjmOeZB8saz3mfNaE959rdTX4jbLGj2AAvwlHQbjvi6ZC2lF2tUMUTo9HAZCRmrlSDyg0SperyUo0sd2yBqKPs3VLzPm9medTeCZBx3nwtp7ZBZBUWW62dt8MitPoYZCnZAPLit4T3PRvjGpT8AZDZD'
-    })
-    .then(function (response) {
-        console.log(response);
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
-*/
+
     //delete image from local storage
 }
 
