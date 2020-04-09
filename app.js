@@ -1,6 +1,7 @@
 const CronJob = require('cron').CronJob;
 const express = require('express');
 const paperStar = require('./paperStar');
+require('dotenv').config();
 
 const app = express();
 
@@ -20,7 +21,7 @@ var job = new CronJob('0 0 */2 * * *', function() {
     else {
         paperStar.lineStar();
     }
-    paperStar.post();
+    paperStar.post(process.env.ID, process.env.TOKEN, process.env.IMAGE_URL);
 }, null);
 
 job.start();

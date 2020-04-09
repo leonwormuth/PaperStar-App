@@ -1,6 +1,5 @@
 const {createCanvas, loadImage} = require('canvas')
 const axios = require('axios');
-const dotenv = require('dotenv').config();
 
 var fs = require('fs');
 
@@ -184,7 +183,7 @@ function curveStar() {
     console.log('Created new Curve Star.');
 }
 
-function post() {
+function post(pageID, accessToken, imageURL) {
     //save image locally
     var out = fs.createWriteStream(__dirname + '/public' + '/star.png');
     var stream = c.pngStream();
@@ -192,15 +191,10 @@ function post() {
     stream.on('data', function(chunk) {out.write(chunk);});
     stream.on('end', function() {console.log('Saved new star successfully.');});
 
-    image = 'https://steemitimages.com/DQmQf3u1kMvYPvEjGniqQ2fnmqXCMFq7bGHQrW8P3Ua7pew/smile-01.jpg';
-
-    console.log(process.env.ID);
-    console.log(process.env.TOKEN);
-/*
     //post request to upload image
-    axios.post('https://graph.facebook.com/' + process.env.ID + '/photos', {
-        url: image,
-        access_token: process.env.TOKEN
+    axios.post('https://graph.facebook.com/' + pageID + '/photos', {
+        url: imageURL,
+        access_token: accessToken
     })
     .then(function (response) {
         console.log(response);
@@ -208,9 +202,7 @@ function post() {
     .catch(function (error) {
         console.log(error);
     });
-    //delete image from local storage*/
 }
-
 
 module.exports = {
     curveStar: curveStar,
