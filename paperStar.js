@@ -139,6 +139,7 @@ function lineStar() {
         }
         grid[xval][yval][2] = 1;
     }
+    console.log('Created new Line Star.');
 }
 
 function curveStar() {
@@ -179,20 +180,19 @@ function curveStar() {
         }
         grid[xval][yval][2] = 1;
     }
+    console.log('Created new Curve Star.');
 }
 
 function post() {
     //save image locally
-    var out = fs.createWriteStream(__dirname + '/star.png');
+    var out = fs.createWriteStream(__dirname + '/public' + '/star.png');
     var stream = c.pngStream();
 
     stream.on('data', function(chunk) {out.write(chunk);});
-    stream.on('end', function() {console.log('saved png');});
-    console.log('Created temporary file star.png');
-
-    var image = '/star.png';
+    stream.on('end', function() {console.log('Saved new star successfully.');});
 
     //post request to upload image
+/*
     axios.post('https://graph.facebook.com/229893064559530/photos', {
         url: image,
         access_token: 'EAACVS6jUj0QBAI6FWZAjWHgL40SCzjmOeZB8saz3mfNaE959rdTX4jbLGj2AAvwlHQbjvi6ZC2lF2tUMUTo9HAZCRmrlSDyg0SperyUo0sd2yBqKPs3VLzPm9medTeCZBx3nwtp7ZBZBUWW62dt8MitPoYZCnZAPLit4T3PRvjGpT8AZDZD'
@@ -203,7 +203,7 @@ function post() {
     .catch(function (error) {
         console.log(error);
     });
-
+*/
     //delete image from local storage
 }
 
