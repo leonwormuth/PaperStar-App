@@ -183,6 +183,112 @@ function curveStar() {
     console.log('Created new Curve Star.');
 }
 
+function awareStar() {
+    init();
+
+    var lineLength;
+
+    for (var i = 2 + getRandomInt(2); i < edgePoints.length; i++) { //commented out for testing
+        ctx.strokeStyle = '#' + Math.floor(Math.random() * 16777215).toString(16); //each line is a random colour
+
+        var currentX = edgePoints[i][1]/GRID_INTERVAL;
+        var currentY = edgePoints[i][0]/GRID_INTERVAL;
+        var nextX;
+        var nextY;
+
+        //pathfinding loop
+        var lineQueue = []; //queue to add chosen path points to, for drawing later
+        var options = [];
+        var chosen;
+
+        lineQueue.unshift([currentX,currentY]);
+        lineLength = 0;
+
+        while (lineLength < 20) {
+            if ((currentX + 1) < gridSize) {
+                switch (grid[currentX + 1][currentY][2]) {
+                    case 0:
+                        options.unshift([currentX + 1,currentY]);
+                        break;
+                }
+            }
+            if ((currentX - 1) < gridSize && (currentX - 1) >= 0) {
+                switch (grid[currentX - 1][currentY][2]) {
+                    case 0:
+                        options.unshift([currentX - 1,currentY]);
+                        break;
+                }
+            }
+            if ((currentY + 1) < gridSize) {
+                switch (grid[currentX][currentY + 1][2]) {
+                    case 0:
+                        options.unshift([currentX,currentY + 1]);
+                        break;
+                }
+            }
+
+            if ((currentY - 1) < gridSize && (currentY - 1) >= 0) {
+                switch (grid[currentX][currentY - 1][2]) {
+                    case 0:
+                        options.unshift([currentX,currentY - 1]);
+                        break;
+                }
+            }
+            if (options.length == 0) break;
+
+            chosen = options[Math.floor(Math.random() * options.length)];
+            grid[chosen[0]][chosen[1]][2] = 1;
+            lineQueue.unshift(chosen);
+
+            currentX = chosen[0];
+            currentY = chosen[1];
+
+            options = []; //clear the options array for the next iteration
+            lineLength++;
+        }
+
+        var currentPoint;
+        var nextPoint;
+        var tempQueue;
+
+        if (lineQueue.length == 1) {
+            /*nextPoint = lineQueue.pop();
+
+            ctx.beginPath();
+            ctx.moveTo(400 + nextPoint[1] * GRID_INTERVAL, 400 - nextPoint[0] * GRID_INTERVAL);
+            ctx.lineTo(400 + nextPoint[1] * GRID_INTERVAL, 400 - nextPoint[0] * GRID_INTERVAL);
+            ctx.stroke();*/
+        }
+        else {
+            //draw the line (and its mirrored counterpart) using the lineQueue data structure
+            tempQueue = lineQueue;
+            currentPoint = tempQueue.pop();
+            nextPoint = tempQueue.pop();
+
+            while(tempQueue.length != 0) {
+                for (var j = 0; j < 4; j++) {
+                    ctx.beginPath();
+                    ctx.moveTo(400 + currentPoint[1] * GRID_INTERVAL, 400 - currentPoint[0] * GRID_INTERVAL);
+                    ctx.lineTo(400 + nextPoint[1] * GRID_INTERVAL, 400 - nextPoint[0] * GRID_INTERVAL);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(400 - currentPoint[1] * GRID_INTERVAL, 400 - currentPoint[0] * GRID_INTERVAL);
+                    ctx.lineTo(400 - nextPoint[1] * GRID_INTERVAL, 400 - nextPoint[0] * GRID_INTERVAL);
+                    ctx.stroke();
+
+                    ctx.translate(c.width/2,c.height/2);
+                    ctx.rotate(ROTATION * Math.PI / 180);
+                    ctx.translate(-c.width/2,-c.height/2);
+                }
+                currentPoint = nextPoint;
+                nextPoint = tempQueue.pop();
+            }
+        }
+    }
+    console.log('Created new Aware Star.');
+}
+
 function post(pageID, accessToken, imageURL) {
     //save image locally
     var out = fs.createWriteStream(__dirname + '/public' + '/star.png');
@@ -197,7 +303,7 @@ function post(pageID, accessToken, imageURL) {
         access_token: accessToken
     })
     .then(function (response) {
-        console.log(response);
+        console.log('Post created: ' + response.data);
     })
     .catch(function (error) {
         console.log(error);
@@ -205,7 +311,8 @@ function post(pageID, accessToken, imageURL) {
 }
 
 module.exports = {
+    awareStar: awareStar,
     curveStar: curveStar,
     lineStar: lineStar,
-    post: post,
+    post: post
 };
