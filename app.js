@@ -16,13 +16,13 @@ var job = new CronJob('0 0 */2 * * *', function() {
     console.log('\nBeginning task at ' + date.toISOString());
 
     var pickStar = Math.ceil(Math.random() * 100);
-    if (pickStar < 34) {
+    if (pickStar < 26) {
         paperStar.curveStar();
     }
-    if (pickStar > 33 && pickStar < 67) {
+    if (pickStar > 25 && pickStar < 51) {
         paperStar.lineStar();
     }
-    if (pickStar > 66) {
+    if (pickStar > 50) {
         paperStar.awareStar();
     }
     paperStar.post(process.env.ID, process.env.TOKEN, process.env.IMAGE_URL);
