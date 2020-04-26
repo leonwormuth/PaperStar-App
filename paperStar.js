@@ -189,7 +189,7 @@ function awareStar() {
     var lineLength;
 
     for (var i = 2 + getRandomInt(2); i < edgePoints.length; i++) { //commented out for testing
-        ctx.strokeStyle = '#' + Math.floor(Math.random() * 16777215).toString(16); //each line is a random colour
+        ctx.strokeStyle = '#' + Math.random().toString(16).slice(2, 8); //each line is a random colour
 
         var currentX = edgePoints[i][1]/GRID_INTERVAL;
         var currentY = edgePoints[i][0]/GRID_INTERVAL;
