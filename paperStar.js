@@ -16,10 +16,13 @@ var DRAW_BOUNDS = false;
 var DRAW_GRID_POINTS = false;
 var DRAW_OUTLINE = false;
 var GRID_INTERVAL = 15;
+var MAX_LEN = 20;
 var VERTICAL_EDGE_MINIMUM = 150;
 var DIAGONAL_EDGE_MINIMUM = 150;
 var VERTICAL_EDGE_MAXIMUM = 250;
 var DIAGONAL_EDGE_MAXIMUM = 250;
+
+var diagonals; //whether awareStar is allowed to use diagonal lines or not
 
 //initialise drawing style
 ctx.strokeStyle = "#1597e8";
@@ -186,6 +189,8 @@ function curveStar() {
 function awareStar() {
     init();
 
+    (Math.random() < 0.5) ? diagonals = true : diagonals = false; //randomly decide if diagonal lines are allowed or not
+
     var lineLength;
 
     for (var i = 2 + getRandomInt(2); i < edgePoints.length; i++) { //commented out for testing
@@ -234,6 +239,30 @@ function awareStar() {
                         break;
                 }
             }
+
+            if (diagonals == true) {
+                if (((currentY - 1) < gridSize && (currentY - 1) >= 0) && ((currentX - 1) < gridSize && (currentX - 1) >= 0)) {
+                    if (grid[currentX - 1][currentY - 1][2] == 0 && grid[currentX][currentY - 1][2] == 0 && grid[currentX - 1][currentY][2] == 0) {
+                            options.unshift([currentX - 1,currentY - 1]);
+                    }
+                }
+                if (((currentY - 1) < gridSize && (currentY - 1) >= 0) && ((currentX + 1) < gridSize && (currentX + 1) >= 0)) {
+                    if (grid[currentX + 1][currentY - 1][2] == 0 && grid[currentX][currentY - 1][2] == 0 && grid[currentX + 1][currentY][2] == 0) {
+                            options.unshift([currentX + 1,currentY - 1]);
+                    }
+                }
+                if (((currentY + 1) < gridSize && (currentY + 1) >= 0) && ((currentX - 1) < gridSize && (currentX - 1) >= 0)) {
+                    if (grid[currentX - 1][currentY + 1][2] == 0 && grid[currentX][currentY + 1][2] == 0 && grid[currentX - 1][currentY][2] == 0) {
+                            options.unshift([currentX - 1,currentY + 1]);
+                    }
+                }
+                if (((currentY + 1) < gridSize && (currentY + 1) >= 0) && ((currentX + 1) < gridSize && (currentX + 1) >= 0)) {
+                    if (grid[currentX + 1][currentY + 1][2] == 0 && grid[currentX][currentY + 1][2] == 0 && grid[currentX + 1][currentY][2] == 0) {
+                            options.unshift([currentX + 1,currentY + 1]);
+                    }
+                }
+            }
+
             if (options.length == 0) break;
 
             chosen = options[Math.floor(Math.random() * options.length)];
