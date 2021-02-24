@@ -8,16 +8,16 @@ The app uses a virtual JavaScript canvas (node-canvas) to generate different kin
   <summary>LineStar/CurveStar (Click for example)</summary>
   
   <p align="left">Here the lines have no awareness of each other and can overlap. The star below is made up only of curved lines. The line endpoints fall onto an invisible grid.</p>
-  <img width="800" alt="Example CurveStar" src="https://scontent.fper8-1.fna.fbcdn.net/v/t1.0-9/121533357_628383294710503_3404520603675441397_n.png?_nc_cat=106&ccb=2&_nc_sid=9267fe&_nc_ohc=7Jf0POTZfL0AX-Rw6VY&_nc_ht=scontent.fper8-1.fna&oh=bbbbc057f04c90c302c9856a4fbdf3c3&oe=5FEBEB65">
+  <img width="800" alt="Example CurveStar" src="https://i.imgur.com/wciIeUr.png">
 </details>
 <details>
   <summary>AwareStar (Click for example)</summary>
   
   <p align="left">Here the lines that form the star have an awareness of each other and cannot touch or overlap. The lines are bound to the same invisible grid, and are generated in a stepwise fashion.</p>
-  <img width="800" alt="Example CurveStar" src="https://scontent.fper8-1.fna.fbcdn.net/v/t1.0-9/118143047_588464118702421_2998490768554201612_n.png?_nc_cat=102&ccb=2&_nc_sid=9267fe&_nc_ohc=6qGJqdIvOjcAX9yv6GB&_nc_ht=scontent.fper8-1.fna&oh=c67e5e2773d17b3775322b9c8c2156f0&oe=5FE8706A">
+  <img width="800" alt="Example AwareStar" src="https://i.imgur.com/m24yesb.png">
 
   <p align="left">The generator has been designed with future improvements in mind, such as the ability to generate stars at varying scales:</p>
-  <img width="800" alt="Example CurveStar" src="https://i.imgur.com/UokC0zi.png">
+  <img width="800" alt="Example AwareStar" src="https://i.imgur.com/UokC0zi.png">
 </details>
 
 ### Functionality
