@@ -1,6 +1,6 @@
 # PaperStar App
 
-An automated art generator which posts to Facebook every two hours. Built using Express/NodeJS. It is based on a personal hobby of mine which involves cutting fractal stars from folded paper.
+An automated art generator which posts to Facebook every two hours. Built using Express/NodeJS. It is based on a hobby of mine which involves cutting fractal stars from folded paper.
 
 ### Content
 The app uses a virtual JavaScript canvas (node-canvas) to generate different kinds of stars:
