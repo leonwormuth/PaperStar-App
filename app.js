@@ -10,6 +10,7 @@ if (port == null || port == "") {
     port = 3000;
 }
 
+//set up a cron job to randomly generate one of the three star types and post it to Facebook
 var job = new CronJob('0 0 */2 * * *', function() {
     var date = new Date();
 
