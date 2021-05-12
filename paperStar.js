@@ -11,16 +11,16 @@ ctx.translate(c.width/2,c.height/2);
 ctx.rotate(45 * Math.PI / 180);
 ctx.translate(-c.width/2,-c.height/2);
 
-var ROTATION = 90; //for copying and rotating the initial quarter of the star
-var DRAW_BOUNDS = false;
-var DRAW_GRID_POINTS = false;
-var DRAW_OUTLINE = false;
-var GRID_INTERVAL = 15;
-var MAX_LEN = 20;
-var VERTICAL_EDGE_MINIMUM = 150;
-var DIAGONAL_EDGE_MINIMUM = 150;
-var VERTICAL_EDGE_MAXIMUM = 250;
-var DIAGONAL_EDGE_MAXIMUM = 250;
+const ROTATION = 90; //for copying and rotating the initial quarter of the star
+const DRAW_BOUNDS = false;
+const DRAW_GRID_POINTS = false;
+const DRAW_OUTLINE = false;
+const GRID_INTERVAL = 15;
+const MAX_LEN = 20;
+const VERTICAL_EDGE_MINIMUM = 150;
+const DIAGONAL_EDGE_MINIMUM = 150;
+const VERTICAL_EDGE_MAXIMUM = 250;
+const DIAGONAL_EDGE_MAXIMUM = 250;
 
 var diagonals; //whether awareStar is allowed to use diagonal lines or not
 
@@ -36,12 +36,12 @@ var verticalEdgePoint;
 //point grid variables, populated in init()
 var gridRange; //the actual width/length of the grid in pixels
 var gridSize; //the number of points along one side of the grid (gridRange divided by grid point interval)
-var grid;
+var grid; //the main data structure - used to store the points to/from which lines will be drawn
 var edgePoints;
 
 
 function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.ceil(max));
+    return Math.floor(Math.random() * Math.ceil(max));
 }
 
 function createArray(length) { //ref https://stackoverflow.com/questions/966225/how-can-i-create-a-two-dimensional-array-in-javascript/966938#966938
@@ -55,6 +55,7 @@ function createArray(length) { //ref https://stackoverflow.com/questions/966225/
     return arr;
 }
 
+//takes a 3D array and uses this as a map to represent which canvas coordinates fall onto the triangle representing 1/8 of the star
 function fillGrid(gridArray, yIntercept, endPoint, edgeArray) {
     var m = (endPoint - yIntercept) / endPoint;
 
@@ -88,6 +89,7 @@ function fillGrid(gridArray, yIntercept, endPoint, edgeArray) {
     }
 }
 
+//randomly initialises the boundaries used to generate 1/8 of the star
 function init() {
     ctx.clearRect(0, 0, c.width, c.height);
 
@@ -111,6 +113,8 @@ function init() {
     fillGrid(grid, verticalEdgePoint + VERTICAL_EDGE_MINIMUM, diagonalEdgePoint + DIAGONAL_EDGE_MINIMUM, edgePoints);
 }
 
+//draws straight lines from the inner edges of the intial triangle to a random point within the triangle
+//lines can overlap
 function lineStar() {
     init();
 
@@ -145,6 +149,8 @@ function lineStar() {
     console.log('Created new Line Star.');
 }
 
+//draws curved lines from the inner edges of the intial triangle to a random point within the triangle
+//lines can overlap
 function curveStar() {
     init();
 
@@ -186,6 +192,8 @@ function curveStar() {
     console.log('Created new Curve Star.');
 }
 
+//draws lines in a stepwise manner starting from the inner edges of the initial 1/8 triangle
+//lines cannot touch each other and must follow the grid
 function awareStar() {
     init();
 
@@ -193,7 +201,7 @@ function awareStar() {
 
     var lineLength;
 
-    for (var i = 2 + getRandomInt(2); i < edgePoints.length; i++) { //commented out for testing
+    for (var i = 2 + getRandomInt(2); i < edgePoints.length; i++) {
         ctx.strokeStyle = '#' + Math.random().toString(16).slice(2, 8); //each line is a random colour
 
         var currentX = edgePoints[i][1]/GRID_INTERVAL;
@@ -201,7 +209,6 @@ function awareStar() {
         var nextX;
         var nextY;
 
-        //pathfinding loop
         var lineQueue = []; //queue to add chosen path points to, for drawing later
         var options = [];
         var chosen;
@@ -209,7 +216,9 @@ function awareStar() {
         lineQueue.unshift([currentX,currentY]);
         lineLength = 0;
 
+        //pathfinding loop
         while (lineLength < 20) {
+            //check the 4 cardinal neighbours of the current point to see if they are eligible to be chosen as the next point
             if ((currentX + 1) < gridSize) {
                 switch (grid[currentX + 1][currentY][2]) {
                     case 0:
@@ -240,6 +249,7 @@ function awareStar() {
                 }
             }
 
+            //check the 4 diagonal neighbours of the current point if diagonals are allowed for this star
             if (diagonals == true) {
                 if (((currentY - 1) < gridSize && (currentY - 1) >= 0) && ((currentX - 1) < gridSize && (currentX - 1) >= 0)) {
                     if (grid[currentX - 1][currentY - 1][2] == 0 && grid[currentX][currentY - 1][2] == 0 && grid[currentX - 1][currentY][2] == 0) {
@@ -263,7 +273,7 @@ function awareStar() {
                 }
             }
 
-            if (options.length == 0) break;
+            if (options.length == 0) break; 
 
             chosen = options[Math.floor(Math.random() * options.length)];
             grid[chosen[0]][chosen[1]][2] = 1;
@@ -318,11 +328,11 @@ function awareStar() {
     console.log('Created new Aware Star.');
 }
 
+//saves the current canvas to .png and makes a request to post it to Facebook
 function post(pageID, accessToken, imageURL) {
     //save image locally
     var out = fs.createWriteStream(__dirname + '/public' + '/star.png');
     var stream = c.pngStream();
-
     stream.on('data', function(chunk) {out.write(chunk);});
     stream.on('end', function() {console.log('Saved new star successfully.');});
 
